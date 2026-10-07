@@ -2417,6 +2417,7 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 
 
 
+
 // ── BULLETPROOF STATUS FALLBACK ──
 // Runs the moment this script tag is parsed, BEFORE any other code.
 // If after 4 seconds the fb-label still shows the initial "Connecting..."
@@ -4866,64 +4867,56 @@ function openInitiateBilling(preClientId) {
     return '<option value="'+c.id+'"'+(preClientId===c.id?' selected':'')+'>'+escapeHTML(c.name)+'</option>';
   }).join('');
 
-  var now = new Date();
-  var defaultMonth = now.getFullYear()+'-'+ String(now.getMonth()+1).padStart(2,'0');
+  var now=new Date();
+  var defaultMonth=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
 
-  Swal.fire({
-    allowOutsideClick: true,
-    allowEscapeKey: true,
-    showCloseButton: true,
+  var bodyHtml=
+    '<div class="fg"><label class="fl">Client *</label>'+
+      '<select class="fi" id="ib-client" onchange="acctUpdateBillingPreview()">'+
+        '<option value="">Select client...</option>'+clientOpts+
+      '</select></div>'+
+    '<div class="fg"><label class="fl">Billing Month *</label>'+
+      '<input type="month" class="fi" id="ib-month" value="'+defaultMonth+'"/></div>'+
+    '<div id="ib-preview" style="margin-top:12px"></div>';
+
+  acctModal({
     title: 'Initiate Billing',
-    width: Math.min(window.innerWidth-20,560),
-    html: '<div class="mn-modal-body">' +
-      '<div class="fg"><label class="fl">Client *</label>' +
-        '<select class="fi" id="ib-client" onchange="acctUpdateBillingPreview()">' +
-          '<option value="">Select client...</option>'+clientOpts+
-        '</select></div>' +
-      '<div class="fg"><label class="fl">Billing Month *</label>' +
-        '<input type="month" class="fi" id="ib-month" value="'+defaultMonth+'"/></div>' +
-      '<div id="ib-preview" style="margin-top:12px"></div>' +
-    '</div>',
-    showCancelButton: true,
-    confirmButtonText: 'Initiate Billing →',
-    didOpen: function(){ if(preClientId){ acctUpdateBillingPreview(); } },
+    html: bodyHtml,
+    cancelText: 'Cancel',
+    confirmText: 'Initiate Billing \u2192',
+    didOpen: function(){ if(preClientId) acctUpdateBillingPreview(); },
     preConfirm: function(){
-      var cid = document.getElementById('ib-client').value;
-      var month = document.getElementById('ib-month').value;
-      if(!cid){ Swal.showValidationMessage('Please select a client'); return false; }
-      if(!month){ Swal.showValidationMessage('Please select billing month'); return false; }
+      var cid=document.getElementById('ib-client').value;
+      var month=document.getElementById('ib-month').value;
+      if(!cid){ alert('Please select a client'); return false; }
+      if(!month){ alert('Please select billing month'); return false; }
       return {clientId:cid, month:month};
+    },
+    onConfirm: function(val){
+      var cl=acct.clients.find(function(c){return c.id===val.clientId;});
+      if(!cl) return;
+      _brCounter++;
+      var brId='BR-'+new Date().getFullYear()+'-'+String(acct.billingRequests.length+100).padStart(5,'0');
+      var br={
+        id:brId, clientId:cl.id, clientName:cl.name,
+        billingMonth:val.month, billingType:cl.type,
+        ratePerStudent:cl.billing.ratePerStudent||null,
+        packageAmount:cl.billing.packageAmount||null,
+        salesTax:cl.billing.salesTax,
+        previousDues:cl.billing.previousDues||0,
+        status:'pending_technical', studentCount:null,
+        baseAmount:null, salesTaxAmount:null, grandTotal:null,
+        initiatedBy:_acctUser.name, initiatedAt:acctNow(),
+        steps:[{step:'initiated',by:_acctUser.name,at:acctNow(),note:'Billing initiated for '+fmtMonth(val.month)}],
+        invoiceId:null
+      };
+      acct.billingRequests.push(br);
+      acctActivity(_acctUser.name+' initiated billing for '+cl.name+' ('+fmtMonth(val.month)+')', brId);
+      acctAudit('initiated_billing','Billing request created: '+brId, brId);
+      acctSaveLocal(); acctSyncToSb();
+      toast('\u2705','Billing request created: '+brId);
+      switchAcctView('acc-billing-requests');
     }
-  }).then(function(result){
-    if(!result.isConfirmed) return;
-    var cl = acct.clients.find(function(c){return c.id===result.value.clientId;});
-    if(!cl) return;
-
-    _brCounter++;
-    var brId = 'BR-'+new Date().getFullYear()+'-'+String(acct.billingRequests.length+100).padStart(5,'0');
-
-    var br = {
-      id: brId, clientId: cl.id, clientName: cl.name,
-      billingMonth: result.value.month,
-      billingType: cl.type,
-      ratePerStudent: cl.billing.ratePerStudent||null,
-      packageAmount: cl.billing.packageAmount||null,
-      salesTax: cl.billing.salesTax,
-      previousDues: cl.billing.previousDues||0,
-      status: 'pending_technical',
-      studentCount: null,
-      baseAmount: null, salesTaxAmount: null, grandTotal: null,
-      initiatedBy: _acctUser.name, initiatedAt: acctNow(),
-      steps:[{step:'initiated',by:_acctUser.name,at:acctNow(),note:'Billing initiated for '+fmtMonth(result.value.month)}],
-      invoiceId: null
-    };
-
-    acct.billingRequests.push(br);
-    acctActivity(_acctUser.name + ' initiated billing for ' + cl.name + ' ('+fmtMonth(result.value.month)+')', brId);
-    acctAudit('initiated_billing','Billing request created: '+brId, brId);
-    acctSaveLocal(); acctSyncToSb();
-    toast('✅','Billing request created: '+brId);
-    switchAcctView('acc-billing-requests');
   });
 }
 
@@ -4950,53 +4943,160 @@ function acctUpdateBillingPreview() {
 // MODAL: BILLING REQUEST DETAIL
 // ══════════════════════════════════════════════════════════
 
+
+/* ── UNIVERSAL MODAL HELPER ──
+   Replaces problematic Swal for accounts modals.
+   Always closeable: X button, Cancel, Escape, outside click.
+*/
+function acctModal(opts) {
+  // opts: { title, html, confirmText, cancelText, onConfirm, width }
+  // Remove any existing acct modal
+  var existing = document.getElementById('__acct_modal__');
+  if (existing) existing.remove();
+
+  var ov = document.createElement('div');
+  ov.id = '__acct_modal__';
+  ov.style.cssText = [
+    'position:fixed','inset:0','z-index:99999',
+    'display:flex','align-items:center','justify-content:center',
+    'padding:16px','background:rgba(26,4,87,.45)',
+    'backdrop-filter:blur(4px)',
+    'animation:modalBgIn .2s ease'
+  ].join(';');
+
+  var w = opts.width || Math.min(window.innerWidth - 32, 580);
+
+  var confirmBtn = opts.confirmText
+    ? '<button id="__am_confirm__" style="'+
+        'padding:10px 22px;border-radius:12px;border:none;cursor:pointer;'+
+        'font-size:13px;font-weight:700;font-family:inherit;'+
+        'background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;'+
+        'box-shadow:0 4px 14px rgba(67,97,238,.35);transition:all .2s'+
+      '">'+opts.confirmText+'</button>'
+    : '';
+
+  var cancelBtn = '<button id="__am_cancel__" style="'+
+    'padding:10px 18px;border-radius:12px;border:1.5px solid var(--border);cursor:pointer;'+
+    'font-size:13px;font-weight:600;font-family:inherit;'+
+    'background:var(--bg3);color:var(--text);transition:all .2s'+
+  '">'+( opts.cancelText || 'Close')+'</button>';
+
+  ov.innerHTML =
+    '<div style="'+
+      'background:var(--bg2);border-radius:20px;'+
+      'border:1.5px solid var(--border);'+
+      'box-shadow:0 24px 80px rgba(26,4,87,.22);'+
+      'width:'+w+'px;max-width:100%;max-height:90vh;'+
+      'display:flex;flex-direction:column;'+
+      'animation:modalPop .3s cubic-bezier(.22,1,.36,1)'+
+    '">' +
+      /* header */
+      '<div style="'+
+        'display:flex;align-items:center;justify-content:space-between;'+
+        'padding:18px 20px 14px;border-bottom:1.5px solid var(--border)'+
+      '">' +
+        '<div style="font-size:16px;font-weight:800;color:var(--text);letter-spacing:-.3px">'+
+          (opts.title||'')+'</div>'+
+        '<button id="__am_x__" style="'+
+          'background:none;border:none;cursor:pointer;'+
+          'font-size:22px;color:var(--muted);line-height:1;padding:2px 6px;'+
+          'border-radius:6px;transition:all .15s'+
+        '">&times;</button>'+
+      '</div>' +
+      /* body */
+      '<div style="padding:18px 20px;overflow-y:auto;flex:1">'+
+        (opts.html||'')+
+      '</div>'+
+      /* footer */
+      '<div style="'+
+        'padding:14px 20px;border-top:1.5px solid var(--border);'+
+        'display:flex;gap:8px;justify-content:flex-end;'+
+        'background:var(--bg3);border-radius:0 0 20px 20px'+
+      '">'+
+        cancelBtn + confirmBtn +
+      '</div>'+
+    '</div>';
+
+  document.body.appendChild(ov);
+
+  function closeModal() {
+    var el = document.getElementById('__acct_modal__');
+    if (el) el.remove();
+  }
+
+  // Close handlers — all paths close cleanly
+  document.getElementById('__am_x__').onclick = closeModal;
+  document.getElementById('__am_cancel__').onclick = closeModal;
+  ov.onclick = function(e){ if(e.target===ov) closeModal(); };
+  document.addEventListener('keydown', function escHandler(e){
+    if(e.key==='Escape'){ closeModal(); document.removeEventListener('keydown',escHandler); }
+  });
+
+  if (opts.confirmText) {
+    document.getElementById('__am_confirm__').onclick = function(){
+      if (opts.preConfirm) {
+        var val = opts.preConfirm();
+        if (val === false) return; // validation failed
+        closeModal();
+        if (opts.onConfirm) opts.onConfirm(val);
+      } else {
+        closeModal();
+        if (opts.onConfirm) opts.onConfirm();
+      }
+    };
+  }
+
+  if (opts.didOpen) opts.didOpen();
+  return { close: closeModal };
+}
+
 function openBrDetail(brId) {
   var br = acct.billingRequests.find(function(b){return b.id===brId;});
   if(!br) return;
 
   var stepsHtml = (br.steps||[]).map(function(s){
-    return '<div class="acct-step-item">' +
-      '<div class="acct-step-dot"></div>' +
-      '<div><strong>'+escapeHTML(s.by)+'</strong> — '+escapeHTML(s.note)+'<div style="font-size:11px;color:var(--muted)">'+acctTS(s.at)+'</div></div>' +
+    return '<div class="acct-step-item">'+
+      '<div class="acct-step-dot"></div>'+
+      '<div><strong>'+escapeHTML(s.by)+'</strong> \u2014 '+escapeHTML(s.note)+
+      '<div style="font-size:11px;color:var(--muted)">'+acctTS(s.at)+'</div></div>'+
     '</div>';
   }).join('');
 
   var calcHtml = '';
-  if(br.baseAmount) {
-    calcHtml = '<div class="acct-calc-box">' +
-      '<div class="acct-calc-row"><span>Base Amount</span><span>'+fmtPKR(br.baseAmount)+'</span></div>' +
-      '<div class="acct-calc-row"><span>Sales Tax ('+br.salesTax+'%)</span><span>'+fmtPKR(br.salesTaxAmount)+'</span></div>' +
-      (br.previousDues?'<div class="acct-calc-row"><span>Previous Dues</span><span>'+fmtPKR(br.previousDues)+'</span></div>':'') +
-      '<div class="acct-calc-row acct-calc-total"><span>Grand Total</span><span>'+fmtPKR(br.grandTotal)+'</span></div>' +
+  if(br.baseAmount){
+    calcHtml='<div class="acct-calc-box">'+
+      '<div class="acct-calc-row"><span>Base Amount</span><span>'+fmtPKR(br.baseAmount)+'</span></div>'+
+      '<div class="acct-calc-row"><span>Sales Tax ('+br.salesTax+'%)</span><span>'+fmtPKR(br.salesTaxAmount)+'</span></div>'+
+      (br.previousDues?'<div class="acct-calc-row"><span>Previous Dues</span><span>'+fmtPKR(br.previousDues)+'</span></div>':'')+
+      '<div class="acct-calc-row acct-calc-total"><span>Grand Total</span><span>'+fmtPKR(br.grandTotal)+'</span></div>'+
     '</div>';
   }
 
-  Swal.fire({
-    allowOutsideClick: true,
-    allowEscapeKey: true,
-    showCloseButton: true,
+  var bodyHtml=
+    '<div class="acct-detail-grid">'+
+      '<div class="acct-detail-row"><span>Client</span><strong>'+escapeHTML(br.clientName)+'</strong></div>'+
+      '<div class="acct-detail-row"><span>Billing Month</span><strong>'+fmtMonth(br.billingMonth)+'</strong></div>'+
+      '<div class="acct-detail-row"><span>Status</span>'+acctStatusBadge(br.status)+'</div>'+
+      '<div class="acct-detail-row"><span>Billing Type</span>'+acctTypeBadge(br.billingType)+'</div>'+
+      (br.studentCount?'<div class="acct-detail-row"><span>Student Count</span><strong>'+br.studentCount+'</strong></div>':'')+
+      (br.billingType==='per_student'?'<div class="acct-detail-row"><span>Rate/Student</span><strong>'+fmtPKR(br.ratePerStudent)+'</strong></div>':'')+
+      '<div class="acct-detail-row"><span>Sales Tax</span><strong>'+br.salesTax+'%</strong></div>'+
+      '<div class="acct-detail-row"><span>Previous Dues</span><strong>'+fmtPKR(br.previousDues||0)+'</strong></div>'+
+    '</div>'+
+    calcHtml+
+    '<div style="margin-top:16px"><strong style="font-size:13px">Workflow</strong>'+
+    '<div class="acct-steps" style="margin-top:10px">'+stepsHtml+'</div></div>';
+
+  var canGenerate = br.status==='pending_accounts';
+
+  acctModal({
     title: br.id,
-    width: Math.min(window.innerWidth-20,600),
-    html: '<div class="mn-modal-body">' +
-      '<div class="acct-detail-grid">' +
-        '<div class="acct-detail-row"><span>Client</span><strong>'+escapeHTML(br.clientName)+'</strong></div>' +
-        '<div class="acct-detail-row"><span>Billing Month</span><strong>'+fmtMonth(br.billingMonth)+'</strong></div>' +
-        '<div class="acct-detail-row"><span>Status</span>'+acctStatusBadge(br.status)+'</div>' +
-        '<div class="acct-detail-row"><span>Billing Type</span>'+acctTypeBadge(br.billingType)+'</div>' +
-        (br.studentCount?'<div class="acct-detail-row"><span>Student Count</span><strong>'+br.studentCount+'</strong></div>':'')+
-        (br.billingType==='per_student'?'<div class="acct-detail-row"><span>Rate/Student</span><strong>'+fmtPKR(br.ratePerStudent)+'</strong></div>':'') +
-        '<div class="acct-detail-row"><span>Sales Tax</span><strong>'+br.salesTax+'%</strong></div>' +
-        '<div class="acct-detail-row"><span>Previous Dues</span><strong>'+fmtPKR(br.previousDues||0)+'</strong></div>' +
-      '</div>' +
-      calcHtml +
-      '<div style="margin-top:16px"><strong>Workflow</strong><div class="acct-steps">'+stepsHtml+'</div></div>' +
-    '</div>',
-    showCancelButton: false,
-    confirmButtonText: br.status==='pending_accounts' ? 'Generate Invoice' : 'Close',
-    showDenyButton: br.status==='pending_accounts',
-    denyButtonText: 'Close'
-  }).then(function(r){
-    if(r.isConfirmed && br.status==='pending_accounts') openGenerateInvoice(brId);
+    html: bodyHtml,
+    cancelText: 'Close',
+    confirmText: canGenerate ? 'Generate Invoice' : null,
+    onConfirm: function(){
+      if(canGenerate) openGenerateInvoice(brId);
+    }
   });
 }
 
@@ -5005,82 +5105,73 @@ function openBrDetail(brId) {
 // ══════════════════════════════════════════════════════════
 
 function openGenerateInvoice(brId) {
-  var br = acct.billingRequests.find(function(b){return b.id===brId;});
+  var br=acct.billingRequests.find(function(b){return b.id===brId;});
   if(!br) return;
 
-  var base = br.baseAmount || (br.billingType==='per_student' ? (br.studentCount||0)*br.ratePerStudent : br.packageAmount);
-  var stAmt = Math.round(base * br.salesTax / 100);
-  var total = base + stAmt + (br.previousDues||0);
+  var base=br.baseAmount||(br.billingType==='per_student'?(br.studentCount||0)*br.ratePerStudent:br.packageAmount);
+  var stAmt=Math.round(base*br.salesTax/100);
+  var total=base+stAmt+(br.previousDues||0);
 
-  Swal.fire({
+  var bodyHtml=
+    '<div style="background:var(--bg3);border-radius:12px;padding:16px;margin-bottom:16px">'+
+      '<div style="font-size:13px;font-weight:700;margin-bottom:12px;color:var(--text)">Invoice Preview</div>'+
+      '<div class="acct-detail-grid">'+
+        '<div class="acct-detail-row"><span>Client</span><strong>'+escapeHTML(br.clientName)+'</strong></div>'+
+        '<div class="acct-detail-row"><span>Billing Month</span><strong>'+fmtMonth(br.billingMonth)+'</strong></div>'+
+        '<div class="acct-detail-row"><span>Billing Type</span>'+acctTypeBadge(br.billingType)+'</div>'+
+        (br.studentCount?'<div class="acct-detail-row"><span>Students</span><strong>'+br.studentCount+'</strong></div>':'')+
+        (br.billingType==='per_student'?'<div class="acct-detail-row"><span>Rate/Student</span><strong>'+fmtPKR(br.ratePerStudent)+'</strong></div>':
+          '<div class="acct-detail-row"><span>Package</span><strong>'+fmtPKR(br.packageAmount)+'</strong></div>')+
+      '</div>'+
+      '<div class="acct-calc-box" style="margin-top:12px">'+
+        '<div class="acct-calc-row"><span>'+(br.billingType==='per_student'?br.studentCount+' \xd7 '+fmtPKR(br.ratePerStudent):'Package Amount')+'</span><span>'+fmtPKR(base)+'</span></div>'+
+        '<div class="acct-calc-row"><span>Sales Tax ('+br.salesTax+'%)</span><span>'+fmtPKR(stAmt)+'</span></div>'+
+        (br.previousDues?'<div class="acct-calc-row"><span>Previous Dues</span><span>'+fmtPKR(br.previousDues)+'</span></div>':'')+
+        '<div class="acct-calc-row acct-calc-total"><span>Grand Total</span><span>'+fmtPKR(total)+'</span></div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="fg"><label class="fl">Due Date</label>'+
+      '<input type="date" class="fi" id="inv-due-date" value="'+(function(){var d=new Date(Date.now()+30*86400000);return d.toISOString().substring(0,10);})()+'"/></div>'+
+    '<div class="fg"><label class="fl">Notes (optional)</label>'+
+      '<input class="fi" id="inv-notes" placeholder="Any notes for this invoice"/></div>';
+
+  acctModal({
     title: 'Generate Invoice',
-    allowOutsideClick: true,
-    allowEscapeKey: true,
-    showCloseButton: true,
-    width: Math.min(window.innerWidth-20,580),
-    html: '<div class="mn-modal-body">' +
-      '<div style="background:var(--bg3);border-radius:12px;padding:16px;margin-bottom:16px">' +
-        '<div style="font-size:13px;font-weight:700;margin-bottom:12px;color:var(--text)">Invoice Preview</div>' +
-        '<div class="acct-detail-grid">' +
-          '<div class="acct-detail-row"><span>Client</span><strong>'+escapeHTML(br.clientName)+'</strong></div>' +
-          '<div class="acct-detail-row"><span>Billing Month</span><strong>'+fmtMonth(br.billingMonth)+'</strong></div>' +
-          '<div class="acct-detail-row"><span>Billing Type</span>'+acctTypeBadge(br.billingType)+'</div>' +
-          (br.studentCount?'<div class="acct-detail-row"><span>Student Count</span><strong>'+br.studentCount+'</strong></div>':'')+
-          (br.billingType==='per_student'?'<div class="acct-detail-row"><span>Rate/Student</span><strong>'+fmtPKR(br.ratePerStudent)+'</strong></div>':
-            '<div class="acct-detail-row"><span>Package</span><strong>'+fmtPKR(br.packageAmount)+'</strong></div>') +
-        '</div>' +
-        '<div class="acct-calc-box" style="margin-top:12px">' +
-          '<div class="acct-calc-row"><span>'+(br.billingType==='per_student'?br.studentCount+' × '+fmtPKR(br.ratePerStudent):'Package Amount')+'</span><span>'+fmtPKR(base)+'</span></div>' +
-          '<div class="acct-calc-row"><span>Sales Tax ('+br.salesTax+'%)</span><span>'+fmtPKR(stAmt)+'</span></div>' +
-          (br.previousDues?'<div class="acct-calc-row"><span>Previous Dues</span><span>'+fmtPKR(br.previousDues)+'</span></div>':'') +
-          '<div class="acct-calc-row acct-calc-total"><span>Grand Total</span><span>'+fmtPKR(total)+'</span></div>' +
-        '</div>' +
-      '</div>' +
-      '<div class="fg"><label class="fl">Due Date</label><input type="date" class="fi" id="inv-due-date" value="'+(function(){var d=new Date(Date.now()+30*86400000);return d.toISOString().substring(0,10);})()+'"/></div>' +
-      '<div class="fg"><label class="fl">Notes (optional)</label><input class="fi" id="inv-notes" placeholder="Any notes for this invoice"/></div>' +
-    '</div>',
-    showCancelButton: true,
-    confirmButtonText: '✅ Generate Invoice',
+    html: bodyHtml,
+    cancelText: 'Cancel',
+    confirmText: '\u2705 Generate Invoice',
     preConfirm: function(){
-      return {
-        dueDate: document.getElementById('inv-due-date').value,
-        notes: document.getElementById('inv-notes').value.trim()
+      var dd=document.getElementById('inv-due-date').value;
+      if(!dd){ alert('Please select a due date'); return false; }
+      return {dueDate:dd, notes:(document.getElementById('inv-notes').value||'').trim()};
+    },
+    onConfirm: function(val){
+      _invCounter++;
+      var invId='INV-'+new Date().getFullYear()+'-'+String(acct.invoices.length+103).padStart(4,'0');
+      var inv={
+        id:invId, brId:brId, clientId:br.clientId, clientName:br.clientName,
+        billingMonth:br.billingMonth, billingType:br.billingType,
+        studentCount:br.studentCount, rate:br.ratePerStudent, packageAmount:br.packageAmount,
+        baseAmount:base, salesTax:br.salesTax, salesTaxAmount:stAmt,
+        previousDues:br.previousDues||0, grandTotal:total,
+        status:'pending', dueDate:val.dueDate, issuedDate:today(),
+        paymentStatus:'pending', amountPaid:0, outstanding:total,
+        generatedBy:_acctUser.name, generatedAt:acctNow(),
+        sentToClient:false, notes:val.notes
       };
+      acct.invoices.push(inv);
+      br.invoiceId=invId; br.status='invoice_generated';
+      br.baseAmount=base; br.salesTaxAmount=stAmt; br.grandTotal=total;
+      if(!br.steps) br.steps=[];
+      br.steps.push({step:'invoice_generated',by:_acctUser.name,at:acctNow(),note:'Invoice '+invId+' generated'});
+      var cl=acct.clients.find(function(c){return c.id===br.clientId;});
+      if(cl){cl.lastBilledMonth=br.billingMonth;cl.lastBilledAmount=total;cl.lastInvoice=invId;}
+      acctActivity(_acctUser.name+' generated invoice '+invId+' for '+br.clientName,brId);
+      acctAudit('invoice_generated','Invoice '+invId+' generated. Total: '+fmtPKR(total),brId,invId);
+      acctSaveLocal(); acctSyncToSb();
+      toast('\u2705','Invoice '+invId+' generated!');
+      switchAcctView('acc-invoices');
     }
-  }).then(function(result){
-    if(!result.isConfirmed) return;
-
-    _invCounter++;
-    var invId = 'INV-'+new Date().getFullYear()+'-'+String(acct.invoices.length+103).padStart(4,'0');
-
-    var inv = {
-      id: invId, brId: brId, clientId: br.clientId, clientName: br.clientName,
-      billingMonth: br.billingMonth, billingType: br.billingType,
-      studentCount: br.studentCount, rate: br.ratePerStudent, packageAmount: br.packageAmount,
-      baseAmount: base, salesTax: br.salesTax, salesTaxAmount: stAmt,
-      previousDues: br.previousDues||0, grandTotal: total,
-      status: 'pending', dueDate: result.value.dueDate, issuedDate: today(),
-      paymentStatus: 'pending', amountPaid: 0, outstanding: total,
-      generatedBy: _acctUser.name, generatedAt: acctNow(),
-      sentToClient: false, notes: result.value.notes
-    };
-
-    acct.invoices.push(inv);
-    br.invoiceId = invId;
-    br.status = 'invoice_generated';
-    br.baseAmount = base; br.salesTaxAmount = stAmt; br.grandTotal = total;
-    if(!br.steps) br.steps=[];
-    br.steps.push({step:'invoice_generated', by:_acctUser.name, at:acctNow(), note:'Invoice '+invId+' generated'});
-
-    // Update client last billed
-    var cl = acct.clients.find(function(c){ return c.id===br.clientId; });
-    if(cl){ cl.lastBilledMonth=br.billingMonth; cl.lastBilledAmount=total; cl.lastInvoice=invId; }
-
-    acctActivity(_acctUser.name + ' generated invoice '+invId+' for '+br.clientName, brId);
-    acctAudit('invoice_generated','Invoice '+invId+' generated. Total: '+fmtPKR(total), brId, invId);
-    acctSaveLocal(); acctSyncToSb();
-    toast('✅','Invoice '+invId+' generated!');
-    switchAcctView('acc-invoices');
   });
 }
 
@@ -5143,66 +5234,63 @@ function openClientInvoiceDetail(invId) { openInvoiceDetail(invId); }
 // ══════════════════════════════════════════════════════════
 
 function openRecordPayment(invId) {
-  var inv = acct.invoices.find(function(i){return i.id===invId;});
+  var inv=acct.invoices.find(function(i){return i.id===invId;});
   if(!inv) return;
 
-  Swal.fire({
-    allowOutsideClick: true,
-    allowEscapeKey: true,
-    showCloseButton: true,
-    title: 'Record Payment',
-    width: Math.min(window.innerWidth-20,520),
-    html: '<div class="mn-modal-body">' +
-      '<div class="acct-calc-box" style="margin-bottom:14px">' +
-        '<div class="acct-calc-row"><span>Invoice</span><span class="acct-code">'+inv.id+'</span></div>' +
-        '<div class="acct-calc-row"><span>Grand Total</span><span>'+fmtPKR(inv.grandTotal)+'</span></div>' +
-        '<div class="acct-calc-row"><span>Amount Paid</span><span>'+fmtPKR(inv.amountPaid)+'</span></div>' +
-        '<div class="acct-calc-row acct-calc-total"><span>Outstanding</span><span>'+fmtPKR(inv.outstanding)+'</span></div>' +
-      '</div>' +
-      '<div class="mn-modal-row">' +
-        '<div class="fg" style="flex:1"><label class="fl">Amount Paid *</label><input type="number" class="fi" id="pmt-amount" placeholder="'+inv.outstanding+'" value="'+inv.outstanding+'"/></div>' +
-        '<div class="fg" style="flex:1"><label class="fl">Payment Date *</label><input type="date" class="fi" id="pmt-date" value="'+today()+'"/></div>' +
-      '</div>' +
-      '<div class="mn-modal-row">' +
-        '<div class="fg" style="flex:1"><label class="fl">Payment Method</label>' +
-          '<select class="fi" id="pmt-method"><option>Bank Transfer</option><option>Cheque</option><option>Cash</option><option>Online</option></select></div>' +
-        '<div class="fg" style="flex:1"><label class="fl">Reference #</label><input class="fi" id="pmt-ref" placeholder="TRX-XXXXX"/></div>' +
-      '</div>' +
-      '<div class="fg"><label class="fl">Notes</label><input class="fi" id="pmt-notes" placeholder="Optional notes"/></div>' +
-    '</div>',
-    showCancelButton: true,
-    confirmButtonText: '✅ Record Payment',
+  var bodyHtml=
+    '<div class="acct-calc-box" style="margin-bottom:14px">'+
+      '<div class="acct-calc-row"><span>Invoice</span><span class="acct-code">'+inv.id+'</span></div>'+
+      '<div class="acct-calc-row"><span>Grand Total</span><span>'+fmtPKR(inv.grandTotal)+'</span></div>'+
+      '<div class="acct-calc-row"><span>Amount Paid</span><span>'+fmtPKR(inv.amountPaid)+'</span></div>'+
+      '<div class="acct-calc-row acct-calc-total"><span>Outstanding</span><span>'+fmtPKR(inv.outstanding)+'</span></div>'+
+    '</div>'+
+    '<div class="mn-modal-row">'+
+      '<div class="fg" style="flex:1"><label class="fl">Amount Paid *</label>'+
+        '<input type="number" class="fi" id="pmt-amount" placeholder="'+inv.outstanding+'" value="'+inv.outstanding+'"/></div>'+
+      '<div class="fg" style="flex:1"><label class="fl">Payment Date *</label>'+
+        '<input type="date" class="fi" id="pmt-date" value="'+today()+'"/></div>'+
+    '</div>'+
+    '<div class="mn-modal-row">'+
+      '<div class="fg" style="flex:1"><label class="fl">Payment Method</label>'+
+        '<select class="fi" id="pmt-method"><option>Bank Transfer</option><option>Cheque</option><option>Cash</option><option>Online</option></select></div>'+
+      '<div class="fg" style="flex:1"><label class="fl">Reference #</label>'+
+        '<input class="fi" id="pmt-ref" placeholder="TRX-XXXXX"/></div>'+
+    '</div>'+
+    '<div class="fg"><label class="fl">Notes</label>'+
+      '<input class="fi" id="pmt-notes" placeholder="Optional notes"/></div>';
+
+  acctModal({
+    title: 'Record Payment \u2014 '+invId,
+    html: bodyHtml,
+    cancelText: 'Cancel',
+    confirmText: '\u2705 Record Payment',
     preConfirm: function(){
-      var amt = parseFloat(document.getElementById('pmt-amount').value);
-      if(!amt||amt<=0){ Swal.showValidationMessage('Enter a valid amount'); return false; }
+      var amt=parseFloat(document.getElementById('pmt-amount').value);
+      if(!amt||amt<=0){ alert('Enter a valid amount'); return false; }
       return {
-        amount: amt,
-        date: document.getElementById('pmt-date').value,
-        method: document.getElementById('pmt-method').value,
-        reference: document.getElementById('pmt-ref').value.trim(),
-        notes: document.getElementById('pmt-notes').value.trim()
+        amount:amt,
+        date:document.getElementById('pmt-date').value,
+        method:document.getElementById('pmt-method').value,
+        reference:document.getElementById('pmt-ref').value.trim(),
+        notes:document.getElementById('pmt-notes').value.trim()
       };
+    },
+    onConfirm: function(d){
+      inv.amountPaid=(inv.amountPaid||0)+d.amount;
+      inv.outstanding=Math.max(0,inv.grandTotal-inv.amountPaid);
+      inv.paymentStatus=inv.outstanding<=0?'paid':'partially_paid';
+      var pmtId='PAY-'+String(acct.payments.length+1).padStart(3,'0');
+      acct.payments.push({
+        id:pmtId, invoiceId:invId, clientId:inv.clientId, clientName:inv.clientName,
+        amount:d.amount, date:d.date, method:d.method, reference:d.reference,
+        notes:d.notes, recordedBy:_acctUser.name, recordedAt:acctNow()
+      });
+      acctActivity(_acctUser.name+' recorded payment of '+fmtPKR(d.amount)+' for invoice '+invId,null);
+      acctAudit('payment_recorded','Amount: '+fmtPKR(d.amount)+', Invoice: '+invId,null,invId);
+      acctSaveLocal(); acctSyncToSb();
+      toast('\u2705','Payment recorded! Outstanding: '+fmtPKR(inv.outstanding));
+      renderAcctDashboard();
     }
-  }).then(function(result){
-    if(!result.isConfirmed) return;
-    var d = result.value;
-
-    inv.amountPaid = (inv.amountPaid||0) + d.amount;
-    inv.outstanding = Math.max(0, inv.grandTotal - inv.amountPaid);
-    inv.paymentStatus = inv.outstanding<=0 ? 'paid' : 'partially_paid';
-
-    var pmtId = 'PAY-'+String(acct.payments.length+1).padStart(3,'0');
-    acct.payments.push({
-      id:pmtId, invoiceId:invId, clientId:inv.clientId, clientName:inv.clientName,
-      amount:d.amount, date:d.date, method:d.method, reference:d.reference,
-      notes:d.notes, recordedBy:_acctUser.name, recordedAt:acctNow()
-    });
-
-    acctActivity(_acctUser.name+' recorded payment of '+fmtPKR(d.amount)+' for invoice '+invId, null);
-    acctAudit('payment_recorded','Amount: '+fmtPKR(d.amount)+', Invoice: '+invId, null, invId);
-    acctSaveLocal(); acctSyncToSb();
-    toast('✅','Payment recorded! Outstanding: '+fmtPKR(inv.outstanding));
-    renderAcctDashboard();
   });
 }
 
@@ -7667,6 +7755,7 @@ console.log('[SimpliEd CRM] Agent Graph loaded. Access via window.CRM_AGENTS');
 } else {
   showLogin();
 }
+
 
 
 
