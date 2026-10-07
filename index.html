@@ -2414,6 +2414,8 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 
 
 
+
+
 // ── BULLETPROOF STATUS FALLBACK ──
 // Runs the moment this script tag is parsed, BEFORE any other code.
 // If after 4 seconds the fb-label still shows the initial "Connecting..."
@@ -3619,8 +3621,13 @@ function showView(v,el){
   render(); updBadge(); updBulkBar();
   setTimeout(function(){ var bar=document.getElementById('dash-tab-bar'); if(bar)animTabPill(bar); },20);
 
-  // Step 2: Fetch fresh from Supabase silently
-  _quickSync(v);
+  // Step 2: accounts renders its module; all other views quick-sync silently
+  if(v==='accounts'){
+    var _c=document.getElementById('content');
+    if(_c) renderAcctModule(_c);
+  } else {
+    _quickSync(v);
+  }
 }
 
 // ── MULTI SELECT DELETE ──
@@ -7627,21 +7634,6 @@ var ClientAgent = (function() {
   return { getMyData:getMyData };
 })();
 
-// ── WIRE ROUTER INTO EXISTING NAVIGATION ──
-// Override showView to pass through RouterAgent for accounts views
-var _origShowView = showView;
-function showView(v, el) {
-  if (v === 'accounts') {
-    curView = v; selId = null; selIds.clear();
-    document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
-    if (el) el.classList.add('active');
-    document.getElementById('pg-title').textContent = 'Accounts & Billing';
-    document.getElementById('pg-sub').textContent = _acctUser ? 'Welcome, '+_acctUser.name : '';
-    RouterAgent.route({ role: _acctRole, view: v, user: _acctUser });
-    return;
-  }
-  _origShowView(v, el);
-}
 
 // ── AGENT DEVTOOLS (accessible via console) ──
 window.CRM_AGENTS = {
@@ -7665,6 +7657,8 @@ console.log('[SimpliEd CRM] Agent Graph loaded. Access via window.CRM_AGENTS');
 } else {
   showLogin();
 }
+
+
 
 
 
