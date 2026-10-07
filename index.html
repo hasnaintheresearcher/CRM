@@ -2416,6 +2416,7 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 
 
 
+
 // ── BULLETPROOF STATUS FALLBACK ──
 // Runs the moment this script tag is parsed, BEFORE any other code.
 // If after 4 seconds the fb-label still shows the initial "Connecting..."
@@ -4869,6 +4870,9 @@ function openInitiateBilling(preClientId) {
   var defaultMonth = now.getFullYear()+'-'+ String(now.getMonth()+1).padStart(2,'0');
 
   Swal.fire({
+    allowOutsideClick: true,
+    allowEscapeKey: true,
+    showCloseButton: true,
     title: 'Initiate Billing',
     width: Math.min(window.innerWidth-20,560),
     html: '<div class="mn-modal-body">' +
@@ -4968,6 +4972,9 @@ function openBrDetail(brId) {
   }
 
   Swal.fire({
+    allowOutsideClick: true,
+    allowEscapeKey: true,
+    showCloseButton: true,
     title: br.id,
     width: Math.min(window.innerWidth-20,600),
     html: '<div class="mn-modal-body">' +
@@ -5140,6 +5147,9 @@ function openRecordPayment(invId) {
   if(!inv) return;
 
   Swal.fire({
+    allowOutsideClick: true,
+    allowEscapeKey: true,
+    showCloseButton: true,
     title: 'Record Payment',
     width: Math.min(window.innerWidth-20,520),
     html: '<div class="mn-modal-body">' +
@@ -7657,6 +7667,7 @@ console.log('[SimpliEd CRM] Agent Graph loaded. Access via window.CRM_AGENTS');
 } else {
   showLogin();
 }
+
 
 
 
