@@ -231,9 +231,17 @@ input, select, textarea { font-family: inherit; }
 .sb-toggle.rotated .sb-toggle-icon { transform: rotate(180deg); }
 
 /* Nav sections */
-.sb-nav { flex: 1; overflow-y: auto; overflow-x: hidden; padding: var(--s3) 0; }
-.sb-nav::-webkit-scrollbar { width: 3px; }
-.sb-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,.15); border-radius: 2px; }
+
+nav.nav {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--s3) 0;
+}
+nav.nav::-webkit-scrollbar { width: 3px; }
+nav.nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,.18); border-radius: 2px; }
+nav.nav::-webkit-scrollbar-track { background: transparent; }
+nav.nav { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.18) transparent; }
 
 .nav-sec {
   padding: var(--s4) var(--s4) var(--s2);
@@ -300,8 +308,20 @@ input, select, textarea { font-family: inherit; }
   transition: opacity var(--t2);
 }
 .sidebar.mini .nav-badge { opacity: 0; }
-.sidebar.mini .nav-item { justify-content: center; padding: var(--s2); }
-.sidebar.mini .nav-item .nav-icon { background: transparent; }
+.sidebar.mini .nav-item {
+  justify-content: center;
+  padding: var(--s2) 0;
+  gap: 0;
+  width: 100%;
+}
+.sidebar.mini .nav-icon {
+  background: rgba(255,255,255,.06);
+  margin: 0 auto;
+}
+.sidebar.mini .nav-item.active .nav-icon {
+  background: var(--brand);
+}
+/* mini nav-icon bg handled above */
 
 /* ══════════════════════════════════════════════════════
    MAIN AREA
