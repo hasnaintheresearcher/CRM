@@ -942,8 +942,8 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 .mn-checked{background:var(--purple);color:#fff;border-color:var(--purple)}
 .mn-done-text{text-decoration:line-through;color:var(--muted)}
 .mn-more{font-size:11px;color:var(--muted);margin-top:2px}
-.mn-modal-body{text-align:left}
-.mn-modal-row{display:flex;gap:10px;margin-bottom:10px}
+
+
 .mn-pts-section{margin:12px 0}
 .mn-pts-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .mn-pts-header .fl{flex:1}
@@ -956,7 +956,7 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 .mn-pt-done{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:4px;white-space:nowrap;flex-shrink:0;cursor:pointer}
 .mn-pt-del{background:none;border:none;color:var(--muted2);font-size:18px;cursor:pointer;padding:2px 6px;border-radius:6px;flex-shrink:0;line-height:1}
 .mn-pt-del:hover{background:var(--red-l);color:var(--red)}
-@media(max-width:600px){.mn-modal-row{flex-direction:column;gap:0}.mn-modal-point{flex-wrap:wrap}.mn-pt-type{width:100%}}
+@media(max-width:600px){.mn-modal-point{flex-wrap:wrap}.mn-pt-type{width:100%}}
 
 /* Mini sidebar logo */
 .sidebar.mini .sb-logo-full-img { opacity: 0; width: 0; pointer-events: none; }
@@ -978,23 +978,23 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 .acct-login-sub{font-size:13px;color:var(--muted);text-align:center;margin-top:-8px}
 
 /* Sub-nav */
-.acct-subnav{display:flex;gap:6px;flex-wrap:wrap;padding:12px 0 16px;border-bottom:2px solid var(--border);margin-bottom:20px}
-.acct-subnav-btn{background:var(--bg3);border:1.5px solid var(--border);color:var(--muted);border-radius:10px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap}
-.acct-subnav-btn.active{background:var(--blue);border-color:var(--blue);color:#fff}
-.acct-subnav-btn:hover:not(.active){border-color:var(--border2);color:var(--text)}
-.acct-subnav-logout{margin-left:auto;color:var(--red)!important;border-color:rgba(239,35,60,0.3)!important}
-.acct-subnav-logout:hover{background:rgba(239,35,60,0.08)!important}
+
+
+
+
+
+
 
 /* Content wrapper */
-.acct-content{padding-bottom:80px}
+
 
 /* Stats grid */
-.acct-stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:24px}
-.acct-stat-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;transition:all .15s}
-.acct-stat-card:hover{box-shadow:0 4px 16px rgba(26,4,87,0.08);transform:translateY(-1px)}
-.acct-stat-icon{font-size:22px;flex-shrink:0}
-.acct-stat-val{font-size:18px;font-weight:800;color:var(--text);line-height:1}
-.acct-stat-label{font-size:11px;color:var(--muted);margin-top:3px;font-weight:500}
+
+
+
+
+
+
 .acct-stat-blue{border-left:3px solid var(--blue)}
 .acct-stat-green{border-left:3px solid var(--green)}
 .acct-stat-red{border-left:3px solid var(--red)}
@@ -1003,11 +1003,11 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 .acct-stat-amber{border-left:3px solid var(--amber)}
 
 /* Section */
-.acct-section{background:var(--bg2);border:1.5px solid var(--border);border-radius:16px;padding:18px 20px;margin-bottom:16px}
-.acct-section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.acct-section-title{font-size:15px;font-weight:800;color:var(--text)}
-.acct-count{background:var(--bg3);color:var(--muted);border-radius:10px;padding:2px 8px;font-size:11px;font-weight:600;margin-left:6px}
-.acct-empty{text-align:center;padding:32px;color:var(--muted);font-size:13px}
+
+
+
+
+
 
 /* Tables */
 
@@ -1041,37 +1041,37 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 
 
 /* Calc box */
-.acct-calc-box{background:var(--bg3);border-radius:12px;padding:14px 16px;border:1.5px solid var(--border)}
-.acct-calc-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:13px;border-bottom:1px solid var(--border)}
-.acct-calc-row:last-child{border-bottom:none}
-.acct-calc-total{font-weight:800;font-size:15px;color:var(--text);border-top:2px solid var(--border);margin-top:4px;padding-top:8px}
+
+
+
+
 
 /* Detail grid */
-.acct-detail-grid{display:flex;flex-direction:column;gap:0}
-.acct-detail-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;font-size:13px;border-bottom:1px solid var(--border)}
-.acct-detail-row:last-child{border-bottom:none}
-.acct-detail-row span:first-child{color:var(--muted);font-size:12px}
+
+
+
+
 
 /* Preview box */
 .acct-preview-box{background:var(--bg3);border-radius:10px;padding:12px;border:1.5px solid var(--border)}
 .acct-preview-row{display:flex;justify-content:space-between;font-size:12px;padding:4px 0}
 
 /* Activity */
-.acct-activity-list{display:flex;flex-direction:column;gap:0}
-.acct-activity-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
-.acct-activity-item:last-child{border-bottom:none}
-.acct-activity-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:4px}
-.acct-activity-msg{font-size:13px;color:var(--text)}
-.acct-activity-ts{font-size:11px;color:var(--muted);margin-top:2px}
+
+
+
+
+
+
 
 /* Steps */
-.acct-steps{display:flex;flex-direction:column;gap:0;margin-top:8px}
-.acct-step-item{display:flex;gap:10px;padding:8px 0;border-left:2px solid var(--border);padding-left:12px;font-size:13px}
-.acct-step-dot{width:8px;height:8px;background:var(--purple);border-radius:50%;flex-shrink:0;margin-top:4px;margin-left:-16px}
+
+
+
 
 /* Technical portal */
-.acct-tech-header{display:flex;align-items:center;gap:12px;padding:12px 16px;background:linear-gradient(135deg,#1a0457,#2d0f8a);border-radius:14px;margin-bottom:20px;color:#fff}
-.acct-tech-role{font-size:15px;font-weight:800}
+
+
 .acct-tech-cards{display:flex;flex-direction:column;gap:12px}
 .acct-tech-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:16px;padding:18px 20px}
 .acct-tech-card-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
@@ -1098,13 +1098,13 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 
 /* Responsive */
 @media(max-width:768px){
-  .acct-stats-grid{grid-template-columns:repeat(2,1fr)}
-  .acct-subnav{gap:4px}
-  .acct-subnav-btn{padding:6px 10px;font-size:11px}
+  
+  
+  
   .acct-table th,
 }
 @media(max-width:480px){
-  .acct-stats-grid{grid-template-columns:1fr 1fr}
+  
 }
 
 
@@ -1119,26 +1119,13 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 }
 
 /* Beautiful stat cards */
-.acct-stat-card {
-  transition: all .2s cubic-bezier(.22,1,.36,1) !important;
-  position: relative;overflow:hidden;
-}
-.acct-stat-card::after {
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(255,255,255,.04),transparent);
-  pointer-events:none;
-}
-.acct-stat-card:hover {
-  transform: translateY(-3px) !important;
-  box-shadow: 0 8px 24px rgba(26,4,87,.1) !important;
-}
-.acct-stat-val { line-height:1.1 !important; letter-spacing:-.5px; }
+
+
+
+
 
 /* Better section styling */
-.acct-section {
-  transition: box-shadow .2s !important;
-  border-radius:18px !important;
-}
+
 .acct-section:hover { box-shadow:0 4px 20px rgba(26,4,87,.06) !important; }
 
 /* Table row hover */
@@ -1196,36 +1183,28 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 .fi { transition:all .15s; }
 
 /* Calc box highlight */
-.acct-calc-total {
-  background: var(--blue-l);
-  border-radius: 8px;
-  padding: 10px 8px !important;
-  margin-top: 6px;
-}
+
 
 /* Activity items */
-.acct-activity-item { transition:background .12s; border-radius:8px; padding:10px 8px !important; }
-.acct-activity-item:hover { background:var(--bg3); }
+
+
 
 /* Step items */
-.acct-step-item { padding:10px 12px !important; border-radius:8px; transition:background .12s; }
-.acct-step-item:hover { background:var(--bg3); }
+
+
 
 /* Code spans */
 
 .acct-code:hover { background:var(--blue-l); color:var(--blue); }
 
 /* Sub-nav active tab underline */
-.acct-subnav-btn.active {
-  background:var(--blue) !important;
-  box-shadow:0 4px 12px rgba(67,97,238,.3) !important;
-}
+
 
 /* Mobile improvements */
 @media(max-width:600px){
-  .acct-stats-grid { grid-template-columns:1fr 1fr !important; }
-  .acct-stat-card { padding:12px !important; }
-  .acct-stat-val { font-size:16px !important; }
+  
+  
+  
   .acct-table th, 
 }
 
@@ -1942,6 +1921,294 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 .gate-btn[data-allowed="true"]  { background:linear-gradient(135deg,var(--blue),var(--purple)); color:#fff; box-shadow:0 3px 10px rgba(67,97,238,.3); }
 .gate-btn[data-allowed="false"] { background:var(--bg3); color:var(--muted); cursor:not-allowed; border:1.5px solid var(--border); }
 .gate-btn[data-allowed="true"]:hover { box-shadow:0 6px 18px rgba(67,97,238,.45); transform:translateY(-1px); }
+
+/* ══════════════════════════════════════════════════════════
+   ACCOUNTS MODULE — Clean, Spacious, Attractive UI
+══════════════════════════════════════════════════════════ */
+
+/* ── MODULE WRAPPER ── */
+.acct-module {
+  display:grid;
+  grid-template-columns:210px 1fr;
+  gap:0;
+  min-height:calc(100vh - 120px);
+}
+
+/* ── SIDEBAR NAV ── */
+.acct-sidenav {
+  background:var(--bg2);
+  border-right:1.5px solid var(--border);
+  padding:20px 10px;
+  display:flex; flex-direction:column; gap:2px;
+}
+.acct-sidenav-section {
+  font-size:10px; font-weight:700;
+  letter-spacing:1px; text-transform:uppercase;
+  color:var(--muted2); padding:10px 10px 4px;
+}
+.acct-sidenav-btn {
+  display:flex; align-items:center; gap:10px;
+  width:100%; padding:9px 12px;
+  border:none; background:transparent;
+  border-radius:10px; font-size:13px; font-weight:600;
+  color:var(--muted); cursor:pointer;
+  font-family:inherit; transition:all .15s;
+  text-align:left;
+}
+.acct-sidenav-btn:hover {
+  background:var(--bg3); color:var(--text);
+}
+.acct-sidenav-btn.active {
+  background:var(--blue-l); color:var(--blue);
+  font-weight:700;
+}
+.acct-sidenav-btn .sn-icon {
+  width:28px; height:28px; border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:14px; flex-shrink:0;
+  background:var(--bg3);
+}
+.acct-sidenav-btn.active .sn-icon {
+  background:rgba(67,97,238,.15);
+}
+.acct-sidenav-badge {
+  margin-left:auto; background:var(--red);
+  color:#fff; border-radius:10px;
+  padding:1px 7px; font-size:10px; font-weight:700;
+}
+.acct-sidenav-logout {
+  margin-top:auto; color:var(--red) !important;
+}
+.acct-sidenav-logout:hover {
+  background:var(--red-l) !important;
+}
+
+/* ── MAIN CONTENT ── */
+.acct-main {
+  padding:24px; overflow-y:auto;
+  display:flex; flex-direction:column; gap:20px;
+}
+
+/* ── PAGE HEADER ── */
+.acct-page-header {
+  display:flex; align-items:center;
+  justify-content:space-between; margin-bottom:4px;
+}
+.acct-page-title {
+  font-size:20px; font-weight:800;
+  color:var(--text); letter-spacing:-.4px;
+}
+.acct-page-sub {
+  font-size:12px; color:var(--muted); margin-top:3px;
+}
+
+/* ── STAT CARDS GRID ── */
+.acct-kpi-grid {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+}
+.acct-kpi-card {
+  background:var(--bg2);
+  border:1.5px solid var(--border);
+  border-radius:var(--r-lg); padding:18px 18px 14px;
+  position:relative; overflow:hidden;
+  transition:var(--transition); cursor:default;
+}
+.acct-kpi-card::before {
+  content:''; position:absolute;
+  top:0; left:0; right:0; height:3px;
+  border-radius:var(--r-lg) var(--r-lg) 0 0;
+}
+.acct-kpi-card.kpi-blue::before   { background:linear-gradient(90deg,var(--blue),#6d8ef0); }
+.acct-kpi-card.kpi-green::before  { background:linear-gradient(90deg,var(--green),#34d399); }
+.acct-kpi-card.kpi-amber::before  { background:linear-gradient(90deg,var(--amber),#fbbf24); }
+.acct-kpi-card.kpi-red::before    { background:linear-gradient(90deg,var(--red),#f87171); }
+.acct-kpi-card.kpi-purple::before { background:linear-gradient(90deg,var(--purple),#a78bfa); }
+.acct-kpi-card.kpi-orange::before { background:linear-gradient(90deg,var(--orange),#fb923c); }
+.acct-kpi-card:hover { transform:translateY(-2px); box-shadow:var(--shadow-md); }
+.acct-kpi-top {
+  display:flex; align-items:flex-start;
+  justify-content:space-between; margin-bottom:10px;
+}
+.acct-kpi-label {
+  font-size:11.5px; font-weight:700;
+  text-transform:uppercase; letter-spacing:.5px;
+  color:var(--muted);
+}
+.acct-kpi-icon {
+  width:34px; height:34px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; flex-shrink:0;
+}
+.kpi-blue   .acct-kpi-icon { background:var(--blue-l); }
+.kpi-green  .acct-kpi-icon { background:var(--green-l); }
+.kpi-amber  .acct-kpi-icon { background:var(--amber-l); }
+.kpi-red    .acct-kpi-icon { background:var(--red-l); }
+.kpi-purple .acct-kpi-icon { background:var(--purple-l); }
+.kpi-orange .acct-kpi-icon { background:var(--orange-l); }
+.acct-kpi-val {
+  font-size:26px; font-weight:800;
+  color:var(--text); letter-spacing:-.5px;
+  line-height:1; margin-bottom:4px;
+}
+.acct-kpi-desc {
+  font-size:11px; color:var(--muted2);
+}
+
+/* ── SECTION CARD ── */
+.acct-card {
+  background:var(--bg2);
+  border:1.5px solid var(--border);
+  border-radius:var(--r-lg); overflow:hidden;
+}
+.acct-card-head {
+  display:flex; align-items:center;
+  justify-content:space-between;
+  padding:16px 20px;
+  border-bottom:1.5px solid var(--border);
+  background:var(--bg3);
+}
+.acct-card-title {
+  font-size:14px; font-weight:800;
+  color:var(--text); display:flex;
+  align-items:center; gap:8px;
+}
+.acct-card-count {
+  background:var(--border2); color:var(--muted);
+  border-radius:10px; padding:1px 8px;
+  font-size:11px; font-weight:700;
+}
+
+/* ── TABLE (compact, clean) ── */
+.acct-table-wrap {
+  overflow-x:auto;
+}
+.acct-table {
+  width:100%; border-collapse:collapse;
+  font-size:12.5px; background:var(--bg2);
+}
+.acct-table thead { background:var(--bg3); }
+.acct-table th {
+  padding:10px 14px; text-align:left;
+  font-size:10.5px; font-weight:700;
+  text-transform:uppercase; letter-spacing:.6px;
+  color:var(--muted); white-space:nowrap;
+  border-bottom:1.5px solid var(--border);
+}
+.acct-table td {
+  padding:11px 14px; border-bottom:1px solid var(--border);
+  vertical-align:middle; color:var(--text);
+}
+.acct-table tbody tr:last-child td { border-bottom:none; }
+.acct-table tbody tr:hover { background:rgba(67,97,238,.03); }
+.acct-table tbody tr { transition:background .1s; }
+
+/* ── BADGES ── */
+.acct-badge {
+  display:inline-flex; align-items:center;
+  padding:3px 9px; border-radius:20px;
+  font-size:11px; font-weight:700;
+  letter-spacing:.2px; white-space:nowrap;
+}
+.acct-badge-blue    { background:var(--blue-l);   color:var(--blue);    border:1px solid var(--blue-m); }
+.acct-badge-green   { background:var(--green-l);  color:var(--green-d); border:1px solid rgba(6,214,160,.2); }
+.acct-badge-amber   { background:#fffbeb;          color:#92400e;        border:1px solid #fde68a; }
+.acct-badge-orange  { background:var(--orange-l);  color:#c2410c;        border:1px solid rgba(249,115,22,.2); }
+.acct-badge-red     { background:var(--red-l);     color:var(--red);     border:1px solid rgba(239,35,60,.2); }
+.acct-badge-purple  { background:var(--purple-l);  color:var(--purple);  border:1px solid rgba(123,47,247,.2); }
+.acct-badge-muted   { background:var(--bg3);       color:var(--muted);   border:1px solid var(--border); }
+
+/* ── ID CODE CHIP ── */
+.acct-code {
+  font-family:'JetBrains Mono','Courier New',monospace;
+  font-size:11px; font-weight:700;
+  background:var(--bg3); color:var(--muted);
+  border:1px solid var(--border); border-radius:6px;
+  padding:2px 7px; white-space:nowrap;
+}
+
+/* ── ACTION BUTTONS ── */
+.acct-actions { display:flex; gap:6px; align-items:center; }
+.acct-btn {
+  display:inline-flex; align-items:center; gap:5px;
+  border:1.5px solid var(--border); background:var(--bg3);
+  color:var(--text); border-radius:8px;
+  padding:5px 12px; font-size:11.5px; font-weight:600;
+  cursor:pointer; font-family:inherit; transition:var(--transition);
+  white-space:nowrap;
+}
+.acct-btn:hover { background:var(--bg2); border-color:var(--border2); transform:translateY(-1px); box-shadow:var(--shadow-sm); }
+.acct-btn-primary { background:var(--blue); color:#fff; border-color:var(--blue); }
+.acct-btn-primary:hover { background:#3451d1; box-shadow:0 4px 12px rgba(67,97,238,.3); }
+.acct-btn-success { background:var(--green); color:#fff; border-color:var(--green); }
+.acct-btn-success:hover { background:var(--green-d); box-shadow:0 4px 12px rgba(6,214,160,.3); }
+.acct-btn-danger  { background:var(--red-l); color:var(--red); border-color:rgba(239,35,60,.3); }
+.acct-btn-danger:hover  { background:var(--red); color:#fff; }
+.acct-btn-sm { padding:4px 9px; font-size:11px; border-radius:7px; }
+
+/* ── EMPTY STATE ── */
+.acct-empty {
+  padding:40px; text-align:center;
+  color:var(--muted); font-size:13px;
+}
+.acct-empty-icon { font-size:32px; margin-bottom:10px; }
+
+/* ── ACTIVITY LIST ── */
+.acct-activity-list { display:flex; flex-direction:column; gap:0; }
+.acct-activity-item {
+  display:flex; align-items:flex-start; gap:12px;
+  padding:12px 20px; border-bottom:1px solid var(--border);
+  transition:background .1s;
+}
+.acct-activity-item:last-child { border-bottom:none; }
+.acct-activity-item:hover { background:var(--bg3); }
+.acct-activity-dot {
+  width:8px; height:8px; border-radius:50%;
+  background:var(--blue); flex-shrink:0; margin-top:4px;
+}
+.acct-activity-msg { font-size:12.5px; color:var(--text); line-height:1.4; }
+.acct-activity-ts  { font-size:11px; color:var(--muted2); margin-top:2px; }
+
+/* ── MODAL BODY ── */
+.mn-modal-body { display:flex; flex-direction:column; gap:12px; }
+.mn-modal-row  { display:flex; gap:12px; }
+.acct-detail-grid { display:flex; flex-direction:column; gap:0; border:1.5px solid var(--border); border-radius:12px; overflow:hidden; }
+.acct-detail-row {
+  display:flex; align-items:center;
+  justify-content:space-between; padding:10px 14px;
+  border-bottom:1px solid var(--border); font-size:13px;
+}
+.acct-detail-row:last-child { border-bottom:none; }
+.acct-detail-row span:first-child { color:var(--muted); font-weight:600; font-size:12px; }
+.acct-detail-row strong { color:var(--text); font-weight:700; }
+.acct-calc-box {
+  background:var(--bg3); border-radius:12px; border:1.5px solid var(--border);
+  overflow:hidden;
+}
+.acct-calc-row {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:9px 14px; border-bottom:1px solid var(--border);
+  font-size:13px;
+}
+.acct-calc-row:last-child { border-bottom:none; }
+.acct-calc-row span:first-child { color:var(--muted); }
+.acct-calc-total {
+  font-weight:800; background:var(--bg2);
+}
+.acct-calc-total span { color:var(--text) !important; font-weight:800; }
+
+/* ── WORKFLOW STEPS ── */
+.acct-steps { display:flex; flex-direction:column; gap:0; border-left:2px solid var(--border); margin-left:8px; padding-left:16px; margin-top:8px; }
+.acct-step-item { position:relative; padding-bottom:14px; }
+.acct-step-item:last-child { padding-bottom:0; }
+.acct-step-dot {
+  position:absolute; left:-21px; top:3px;
+  width:10px; height:10px; border-radius:50%;
+  background:var(--blue); border:2px solid var(--bg2);
+}
+.acct-step-item strong { font-size:12.5px; color:var(--text); }
+.acct-step-item > div > div { font-size:11.5px; color:var(--muted); margin-top:1px; }
 </style>
 </head>
 <body>
@@ -2399,6 +2666,7 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 
 
 <script>
+
 
 
 
@@ -4365,24 +4633,37 @@ function switchAcctView(v) {
 // ══════════════════════════════════════════════════════════
 
 function acctSubNav() {
+  var pendingTech = acct.billingRequests.filter(function(b){return b.status==='pending_technical';}).length;
+  var pendingAcct = acct.billingRequests.filter(function(b){return b.status==='pending_accounts';}).length;
+  var pendingPmt  = acct.invoices.filter(function(i){return i.paymentStatus==='pending';}).length;
+
   var views = [
-    {id:'acc-dashboard', label:'Dashboard', icon:'📊'},
-    {id:'acc-clients', label:'Clients', icon:'🏫'},
-    {id:'acc-billing-requests', label:'Billing Requests', icon:'📋'},
-    {id:'acc-invoices', label:'Invoices', icon:'🧾'},
-    {id:'acc-payments', label:'Payments', icon:'💳'},
+    {id:'acc-dashboard',        label:'Dashboard',         icon:'\uD83D\uDCCA', badge:0},
+    {id:'acc-clients',          label:'Clients',           icon:'\uD83C\uDFEB', badge:0},
+    {id:'acc-billing-requests', label:'Billing Requests',  icon:'\uD83D\uDCCB', badge:pendingTech+pendingAcct},
+    {id:'acc-invoices',         label:'Invoices',          icon:'\uD83E\uDDFE', badge:0},
+    {id:'acc-payments',         label:'Payments',          icon:'\uD83D\uDCB3', badge:pendingPmt},
   ];
-  if(_acctRole==='admin') {
-    views.push({id:'acc-users', label:'Users', icon:'👥'});
-    views.push({id:'acc-activity', label:'Activity', icon:'📜'});
+  if(_acctRole==='admin'){
+    views.push({id:'acc-users',    label:'Users',    icon:'\uD83D\uDC65', badge:0});
+    views.push({id:'acc-activity', label:'Activity', icon:'\uD83D\uDCDC', badge:0});
   }
-  var html = '<div class="acct-subnav">';
+
+  var html='<div class="acct-sidenav">';
+  html+='<div class="acct-sidenav-section">Accounts & Billing</div>';
   views.forEach(function(v){
-    html += '<button class="acct-subnav-btn'+(_acctView===v.id?' active':'')+'" onclick="switchAcctView(\''+v.id+'\')">'+
-      v.icon+' '+v.label+'</button>';
+    var isActive=_acctView===v.id;
+    html+='<button class="acct-sidenav-btn'+(isActive?' active':'')+'" onclick="switchAcctView(\''+v.id+'\')">' +
+      '<span class="sn-icon">'+v.icon+'</span>'+
+      v.label+
+      (v.badge>0?'<span class="acct-sidenav-badge">'+v.badge+'</span>':'')+
+    '</button>';
   });
-  html += '<button class="acct-subnav-btn acct-subnav-logout" onclick="acctLogout()">⬡ Sign Out</button>';
-  html += '</div>';
+  html+='<div style="margin-top:auto;padding-top:12px;border-top:1px solid var(--border);margin:auto 4px 0">';
+  html+='<button class="acct-sidenav-btn acct-sidenav-logout" onclick="acctLogout()" style="width:100%">' +
+    '<span class="sn-icon">\u23CF</span>Sign Out'+
+  '</button></div>';
+  html+='</div>';
   return html;
 }
 
@@ -4391,79 +4672,133 @@ function acctSubNav() {
 // ══════════════════════════════════════════════════════════
 
 function renderAcctHome(c) {
-  var clients = acct.clients;
-  var brs = acct.billingRequests;
-  var invs = acct.invoices;
-  var pmts = acct.payments;
+  var clients=acct.clients, brs=acct.billingRequests,
+      invs=acct.invoices, pmts=acct.payments;
 
-  var pendingTech = brs.filter(function(b){return b.status==='pending_technical';}).length;
-  var pendingAcct = brs.filter(function(b){return b.status==='pending_accounts';}).length;
-  var invGenerated = invs.length;
-  var pendingPmt = invs.filter(function(i){return i.paymentStatus==='pending';}).length;
-  var paidThisMonth = invs.filter(function(i){return i.paymentStatus==='paid';}).reduce(function(s,i){return s+i.amountPaid;},0);
-  var totalOutstanding = invs.filter(function(i){return i.paymentStatus!=='paid';}).reduce(function(s,i){return s+i.outstanding;},0);
-  var totalPrevDues = clients.reduce(function(s,c){return s+(c.billing.previousDues||0);},0);
+  var pendingTech  = brs.filter(function(b){return b.status==='pending_technical';}).length;
+  var pendingAcct  = brs.filter(function(b){return b.status==='pending_accounts';}).length;
+  var pendingPmt   = invs.filter(function(i){return i.paymentStatus==='pending';}).length;
+  var paidThisMonth= invs.filter(function(i){return i.paymentStatus==='paid';})
+                        .reduce(function(s,i){return s+i.amountPaid;},0);
+  var totalOut     = invs.filter(function(i){return i.paymentStatus!=='paid';})
+                        .reduce(function(s,i){return s+i.outstanding;},0);
 
-  var html = acctSubNav();
-  html += '<div class="acct-content">';
+  function kpi(label, val, icon, color, desc) {
+    return '<div class="acct-kpi-card kpi-'+color+'">' +
+      '<div class="acct-kpi-top">' +
+        '<div><div class="acct-kpi-label">'+label+'</div></div>' +
+        '<div class="acct-kpi-icon">'+icon+'</div>' +
+      '</div>' +
+      '<div class="acct-kpi-val">'+val+'</div>' +
+      '<div class="acct-kpi-desc">'+desc+'</div>' +
+    '</div>';
+  }
 
-  // Summary cards
-  html += '<div class="acct-stats-grid">' +
-    acctStatCard('Total Clients', clients.length, '🏫', 'blue') +
-    acctStatCard('Due for Billing', clients.filter(function(c){return c.status==='active';}).length, '⏰', 'orange') +
-    acctStatCard('Pending Technical', pendingTech, '⚙️', 'purple') +
-    acctStatCard('Pending Accounts', pendingAcct, '📥', 'amber') +
-    acctStatCard('Invoices Generated', invGenerated, '🧾', 'blue') +
-    acctStatCard('Pending Payments', pendingPmt, '💳', 'red') +
-    acctStatCard('Paid This Month', fmtPKR(paidThisMonth), '✅', 'green') +
-    acctStatCard('Total Outstanding', fmtPKR(totalOutstanding), '⚠️', 'red') +
+  var activeBrs = brs.filter(function(b){return b.status!=='paid'&&b.status!=='cancelled';})
+                     .slice(0,8);
+  var recentAct = acct.activityLog.slice(0,6);
+
+  var html = '<div class="fi-anim" style="display:flex;gap:0;min-height:calc(100vh - 118px)">' +
+    acctSubNav() +
+    '<div class="acct-main">';
+
+  // Page header
+  html += '<div class="acct-page-header">' +
+    '<div>' +
+      '<div class="acct-page-title">Dashboard</div>' +
+      '<div class="acct-page-sub">'+new Date().toLocaleDateString('en-PK',{weekday:'long',year:'numeric',month:'long',day:'numeric'})+'</div>' +
+    '</div>' +
+    '<button class="btn btn-primary" onclick="openInitiateBilling()" style="gap:7px;display:flex;align-items:center">' +
+      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
+      'Initiate Billing' +
+    '</button>' +
   '</div>';
 
-  // Active billing requests
-  html += '<div class="acct-section"><div class="acct-section-head"><div class="acct-section-title">Active Billing Requests</div>' +
-    '<button class="acct-btn acct-btn-primary" onclick="openInitiateBilling()">+ Initiate Billing</button></div>';
+  // KPI grid — 4 across top, 4 below
+  html += '<div class="acct-kpi-grid">' +
+    kpi('Total Clients',      clients.length,           '\uD83C\uDFEB', 'blue',   clients.filter(function(c){return c.status==='active';}).length+' active') +
+    kpi('Pending Technical',  pendingTech,               '\u2699\uFE0F',  'purple', 'Awaiting student count') +
+    kpi('Pending Accounts',   pendingAcct,               '\uD83D\uDCE5',  'amber',  'Ready to generate invoice') +
+    kpi('Pending Payments',   pendingPmt,                '\uD83D\uDCB3',  'red',    'Invoices awaiting payment') +
+  '</div>';
 
-  var activeBrs = brs.filter(function(b){return b.status!=='paid'&&b.status!=='cancelled';});
-  if(!activeBrs.length) {
-    html += '<div class="acct-empty">No active billing requests. Click "+ Initiate Billing" to start.</div>';
+  html += '<div class="acct-kpi-grid">' +
+    kpi('Invoices Generated', invs.length,               '\uD83E\uDDFE',  'blue',   'All time') +
+    kpi('Paid This Month',    fmtPKR(paidThisMonth),     '\u2705',        'green',  'Collected') +
+    kpi('Total Outstanding',  fmtPKR(totalOut),          '\u26A0\uFE0F',  'orange', 'Across all invoices') +
+    kpi('Previous Dues',      fmtPKR(clients.reduce(function(s,c){return s+(c.billing.previousDues||0);},0)), '\uD83D\uDCC5', 'red', 'Carried forward') +
+  '</div>';
+
+  // Active billing requests table
+  html += '<div class="acct-card">' +
+    '<div class="acct-card-head">' +
+      '<div class="acct-card-title">\uD83D\uDCCB Active Billing Requests <span class="acct-card-count">'+activeBrs.length+'</span></div>' +
+      '<button class="acct-btn acct-btn-sm acct-btn-primary" onclick="switchAcctView(\'acc-billing-requests\')">View All \u2192</button>' +
+    '</div>';
+
+  if(!activeBrs.length){
+    html+='<div class="acct-empty"><div class="acct-empty-icon">\uD83C\uDFAF</div>No active billing requests. Click \u201c+ Initiate Billing\u201d to start.</div>';
   } else {
-    html += '<div class="acct-table-wrap"><table class="acct-table"><thead><tr>' +
-      '<th>Request ID</th><th>Client</th><th>Month</th><th>Type</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
+    html+='<div class="acct-table-wrap"><table class="acct-table"><thead><tr>'+
+      '<th>Request ID</th><th>Client</th><th>Month</th><th>Type</th><th>Status</th><th>Actions</th>'+
+    '</tr></thead><tbody>';
     activeBrs.forEach(function(br){
-      html += '<tr><td><span class="acct-code">'+br.id+'</span></td>' +
-        '<td><strong>'+escapeHTML(br.clientName)+'</strong></td>' +
-        '<td>'+fmtMonth(br.billingMonth)+'</td>' +
-        '<td>'+acctTypeBadge(br.billingType)+'</td>' +
-        '<td>'+acctStatusBadge(br.status)+'</td>' +
-        '<td class="acct-actions">'+
+      html+='<tr>'+
+        '<td><span class="acct-code">'+br.id+'</span></td>'+
+        '<td><strong>'+escapeHTML(br.clientName)+'</strong></td>'+
+        '<td style="color:var(--muted)">'+fmtMonth(br.billingMonth)+'</td>'+
+        '<td>'+acctTypeBadge(br.billingType)+'</td>'+
+        '<td>'+acctStatusBadge(br.status)+'</td>'+
+        '<td><div class="acct-actions">'+
           '<button class="acct-btn acct-btn-sm" onclick="openBrDetail(\''+br.id+'\')">View</button>'+
           (br.status==='pending_accounts'?'<button class="acct-btn acct-btn-sm acct-btn-primary" onclick="openGenerateInvoice(\''+br.id+'\')">Generate Invoice</button>':'')+
-        '</td></tr>';
+        '</div></td>'+
+      '</tr>';
     });
-    html += '</tbody></table></div>';
+    html+='</tbody></table></div>';
   }
-  html += '</div>';
+  html+='</div>';
 
-  // Recent Activity
-  html += '<div class="acct-section"><div class="acct-section-head"><div class="acct-section-title">Recent Activity</div></div>';
-  var recentAct = acct.activityLog.slice(0,8);
-  if(!recentAct.length) {
-    html += '<div class="acct-empty">No activity yet.</div>';
+  // Recent Activity + Quick Stats side by side
+  html += '<div style="display:grid;grid-template-columns:1fr 300px;gap:16px">';
+
+  // Activity feed
+  html += '<div class="acct-card">' +
+    '<div class="acct-card-head"><div class="acct-card-title">\uD83D\uDCDC Recent Activity</div></div>';
+  if(!recentAct.length){
+    html+='<div class="acct-empty">No activity yet.</div>';
   } else {
-    html += '<div class="acct-activity-list">';
+    html+='<div class="acct-activity-list">';
     recentAct.forEach(function(a){
-      html += '<div class="acct-activity-item">' +
-        '<div class="acct-activity-dot"></div>' +
-        '<div class="acct-activity-body">' +
-          '<div class="acct-activity-msg">'+escapeHTML(a.msg)+'</div>' +
-          '<div class="acct-activity-ts">'+acctTS(a.ts)+'</div>' +
-        '</div></div>';
+      html+='<div class="acct-activity-item">'+
+        '<div class="acct-activity-dot"></div>'+
+        '<div><div class="acct-activity-msg">'+escapeHTML(a.msg)+'</div>'+
+        '<div class="acct-activity-ts">'+acctTS(a.ts)+'</div></div>'+
+      '</div>';
     });
-    html += '</div>';
+    html+='</div>';
   }
-  html += '</div>';
+  html+='</div>';
 
-  html += '</div>'; // acct-content
+  // Quick links panel
+  html += '<div class="acct-card">' +
+    '<div class="acct-card-head"><div class="acct-card-title">\u26A1 Quick Actions</div></div>' +
+    '<div style="padding:12px;display:flex;flex-direction:column;gap:8px">' +
+      '<button class="acct-btn" style="justify-content:flex-start;gap:10px;padding:12px 14px" onclick="openInitiateBilling()">' +
+        '<span style="font-size:18px">\uD83D\uDCCB</span><div style="text-align:left"><div style="font-weight:700">Initiate Billing</div><div style="font-size:11px;color:var(--muted)">Start a new billing request</div></div>' +
+      '</button>' +
+      '<button class="acct-btn" style="justify-content:flex-start;gap:10px;padding:12px 14px" onclick="switchAcctView(\'acc-invoices\')">' +
+        '<span style="font-size:18px">\uD83E\uDDFE</span><div style="text-align:left"><div style="font-weight:700">View Invoices</div><div style="font-size:11px;color:var(--muted)">'+invs.length+' invoices total</div></div>' +
+      '</button>' +
+      '<button class="acct-btn" style="justify-content:flex-start;gap:10px;padding:12px 14px" onclick="switchAcctView(\'acc-clients\')">' +
+        '<span style="font-size:18px">\uD83C\uDFEB</span><div style="text-align:left"><div style="font-weight:700">Manage Clients</div><div style="font-size:11px;color:var(--muted)">'+clients.length+' clients on record</div></div>' +
+      '</button>' +
+    '</div>' +
+  '</div>';
+
+  html += '</div>'; // grid
+  html += '</div></div>'; // acct-main + wrapper
+
   c.innerHTML = html;
 }
 
@@ -4502,7 +4837,7 @@ function acctTypeBadge(type) {
 
 function renderAcctClients(c) {
   var clients = acct.clients;
-  var html = acctSubNav() + '<div class="acct-content">';
+  var html = '<div class="fi-anim" style="display:flex;gap:0;min-height:calc(100vh - 118px)">' + acctSubNav() + '<div class="acct-main">';
   html += '<div class="acct-section-head" style="margin-bottom:16px">' +
     '<div class="acct-section-title">Clients <span class="acct-count">'+clients.length+'</span></div>' +
     '<button class="acct-btn acct-btn-primary" onclick="openAddClient()">+ Add Client</button>' +
@@ -4531,6 +4866,7 @@ function renderAcctClients(c) {
   });
 
   html += '</tbody></table></div></div>';
+  html += '</div></div>';
   c.innerHTML = html;
 }
 
@@ -4540,7 +4876,7 @@ function renderAcctClients(c) {
 
 function renderAcctBillingRequests(c) {
   var brs = acct.billingRequests.slice().reverse();
-  var html = acctSubNav() + '<div class="acct-content">';
+  var html = '<div class="fi-anim" style="display:flex;gap:0;min-height:calc(100vh - 118px)">' + acctSubNav() + '<div class="acct-main">';
   html += '<div class="acct-section-head" style="margin-bottom:16px">' +
     '<div class="acct-section-title">Billing Requests <span class="acct-count">'+brs.length+'</span></div>' +
     '<button class="acct-btn acct-btn-primary" onclick="openInitiateBilling()">+ Initiate Billing</button>' +
@@ -4567,6 +4903,7 @@ function renderAcctBillingRequests(c) {
   });
 
   html += '</tbody></table></div></div>';
+  html += '</div></div>';
   c.innerHTML = html;
 }
 
@@ -4576,7 +4913,7 @@ function renderAcctBillingRequests(c) {
 
 function renderAcctInvoices(c) {
   var invs = acct.invoices.slice().reverse();
-  var html = acctSubNav() + '<div class="acct-content">';
+  var html = '<div class="fi-anim" style="display:flex;gap:0;min-height:calc(100vh - 118px)">' + acctSubNav() + '<div class="acct-main">';
   html += '<div class="acct-section-head" style="margin-bottom:16px">' +
     '<div class="acct-section-title">Invoices <span class="acct-count">'+invs.length+'</span></div>' +
   '</div>';
@@ -4603,6 +4940,7 @@ function renderAcctInvoices(c) {
   });
 
   html += '</tbody></table></div></div>';
+  html += '</div></div>';
   c.innerHTML = html;
 }
 
@@ -4612,7 +4950,7 @@ function renderAcctInvoices(c) {
 
 function renderAcctPayments(c) {
   var pmts = acct.payments.slice().reverse();
-  var html = acctSubNav() + '<div class="acct-content">';
+  var html = '<div class="fi-anim" style="display:flex;gap:0;min-height:calc(100vh - 118px)">' + acctSubNav() + '<div class="acct-main">';
   html += '<div class="acct-section-head" style="margin-bottom:16px">' +
     '<div class="acct-section-title">Payments <span class="acct-count">'+pmts.length+'</span></div>' +
   '</div>';
@@ -4637,7 +4975,8 @@ function renderAcctPayments(c) {
     });
     html += '</tbody></table></div>';
   }
-  html += '</div>';
+  html += '</div></div>';
+  html += '</div></div>';
   c.innerHTML = html;
 }
 
@@ -4648,7 +4987,7 @@ function renderAcctPayments(c) {
 function renderAcctUsers(c) {
   if(!acctCan('all')) { c.innerHTML='<div class="acct-content"><div class="acct-empty">Access denied.</div></div>'; return; }
   var users = acct.users;
-  var html = acctSubNav() + '<div class="acct-content">';
+  var html = '<div class="fi-anim" style="display:flex;gap:0;min-height:calc(100vh - 118px)">' + acctSubNav() + '<div class="acct-main">';
   html += '<div class="acct-section-head" style="margin-bottom:16px">' +
     '<div class="acct-section-title">User Management</div>' +
     '<button class="acct-btn acct-btn-primary" onclick="openAddUser()">+ Add User</button>' +
@@ -4672,6 +5011,7 @@ function renderAcctUsers(c) {
   });
 
   html += '</tbody></table></div></div>';
+  html += '</div></div>';
   c.innerHTML = html;
 }
 
@@ -4684,7 +5024,7 @@ function acctRoleColor(role) {
 // ══════════════════════════════════════════════════════════
 
 function renderAcctActivity(c) {
-  var html = acctSubNav() + '<div class="acct-content">';
+  var html = '<div class="fi-anim" style="display:flex;gap:0;min-height:calc(100vh - 118px)">' + acctSubNav() + '<div class="acct-main">';
   html += '<div class="acct-section-head" style="margin-bottom:16px">' +
     '<div class="acct-section-title">Activity Log</div></div>';
   html += '<div class="acct-activity-list">';
@@ -4709,6 +5049,7 @@ function renderAcctActivity(c) {
       '<td>'+escapeHTML(a.details)+'</td></tr>';
   });
   html += '</tbody></table></div></div>';
+  html += '</div></div>';
   c.innerHTML = html;
 }
 
@@ -7755,6 +8096,7 @@ console.log('[SimpliEd CRM] Agent Graph loaded. Access via window.CRM_AGENTS');
 } else {
   showLogin();
 }
+
 
 
 
