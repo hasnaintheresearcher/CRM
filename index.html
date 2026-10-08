@@ -304,10 +304,7 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
   transition:box-shadow .2s;
 }
 .section-card:hover { box-shadow:var(--shadow-md); }
-.section-head {
-  display:flex; align-items:center; justify-content:space-between;
-  margin-bottom:16px;
-}
+
 .section-title { font-size:14px; font-weight:800; color:var(--text); letter-spacing:-.2px; }
 .section-count {
   background:var(--bg3); color:var(--muted);
@@ -1672,9 +1669,9 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 .topbar-icon-btn:hover{background:var(--bg2);color:var(--text);border-color:var(--border2);transform:translateY(-1px);box-shadow:var(--shadow-sm);}
 .topbar-icon-btn-danger{color:var(--red);}
 .topbar-icon-btn-danger:hover{background:var(--red-l);border-color:rgba(239,35,60,.3);color:var(--red);}
-.dash-search-wrap{padding:0 0 12px;}
-.dash-search{width:100%;max-width:100%;border-radius:12px !important;}
-.dash-search:focus-within{width:100% !important;}
+
+
+
 
 .acct-role-btn{display:flex;align-items:center;gap:14px;width:100%;padding:16px 18px;background:var(--bg3);border:1.5px solid var(--border);border-radius:var(--r);cursor:pointer;font-family:inherit;transition:var(--transition);text-align:left;}
 .acct-role-btn:hover{background:var(--blue-l);border-color:var(--blue-m);transform:translateY(-1px);box-shadow:var(--shadow-md);}
@@ -1755,13 +1752,9 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 }
 
 /* ── DASHBOARD PROSPECT SECTION SPACING ── */
-.dash-search-wrap {
-  padding:14px 0 12px;
-  border-bottom:1px solid var(--border);
-  margin-bottom:14px;
-}
-.dash-search { width:100%; max-width:100%; border-radius:12px !important; }
-.dash-search:focus-within { width:100% !important; }
+
+
+
 
 /* ── BACKUP MODAL ── */
 .bak-card {
@@ -2209,6 +2202,33 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 }
 .acct-step-item strong { font-size:12.5px; color:var(--text); }
 .acct-step-item > div > div { font-size:11.5px; color:var(--muted); margin-top:1px; }
+
+/* ── DASHBOARD SEARCH + TAB SPACING ── */
+.dash-search-wrap {
+  padding:14px 0 12px;
+}
+.dash-search {
+  width:100%; max-width:100%;
+  border-radius:12px !important;
+  background:var(--bg3) !important;
+  border:1.5px solid var(--border) !important;
+}
+.dash-search:focus-within {
+  border-color:var(--blue) !important;
+  background:var(--bg2) !important;
+  box-shadow:0 0 0 3px rgba(67,97,238,.08) !important;
+  width:100% !important;
+}
+/* Tab bar always has top spacing from whatever is above */
+.section-card .tab-bar {
+  margin-top:2px;
+}
+
+.section-head {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 18px 14px;
+  border-bottom:1.5px solid var(--border);
+}
 </style>
 </head>
 <body>
@@ -2666,6 +2686,7 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 
 
 <script>
+
 
 
 
@@ -5956,9 +5977,11 @@ function renderDash(c){
         '<button class="btn btn-primary btn-sm" onclick="openAddModal()">+ Add</button>'+
       '</div>'+
     '</div>'+
-    '<div class="search-bar">'+
+    '<div class="dash-search-wrap">'+
+      '<div class="search-bar dash-search">'+
       '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted2);flex-shrink:0"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>'+
       '<input type="text" placeholder="Search by name or school…" oninput="dashFilter(\'all\',null,this.value)" autocomplete="off"/>'+
+      '</div>'+
     '</div>'+
     '<div class="tab-bar" id="dash-tab-bar">'+'<div class="tab-bar-pill" id="dash-pill"></div>'+
       '<button class="tab-btn active" onclick="dashFilter(\'all\',this)">All <span class="tab-badge" id="d-all-cnt">'+tot+'</span></button>'+
@@ -7495,6 +7518,7 @@ function schedMtg(id){
 }
 
 // ── PROSPECT MODAL ──
+function openAddModal(){ openProspectModal(); }
 function openProspectModal(){document.getElementById('pmodal').classList.add('open');}
 function closeProspectModal(){document.getElementById('pmodal').classList.remove('open');}
 function addProspect(){
@@ -8096,6 +8120,7 @@ console.log('[SimpliEd CRM] Agent Graph loaded. Access via window.CRM_AGENTS');
 } else {
   showLogin();
 }
+
 
 
 
