@@ -2229,6 +2229,37 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
   padding:16px 18px 14px;
   border-bottom:1.5px solid var(--border);
 }
+
+/* ── MH COLOR VARIANTS ── */
+.mh.teal { background:linear-gradient(135deg,#e0f7fa,#e8f5e9); }
+.mh.teal .mt { color:#00695c; }
+.mh.green { background:linear-gradient(135deg,var(--green-l),#d1fae5); }
+.mh.green .mt { color:var(--green-d); }
+.mh.amber { background:linear-gradient(135deg,#fffbeb,#fef3c7); }
+.mh.amber .mt { color:#92400e; }
+.mh.purple { background:linear-gradient(135deg,var(--purple-l),#ede9fe); }
+.mh.purple .mt { color:var(--purple); }
+.mh.red { background:linear-gradient(135deg,var(--red-l),#fecaca); }
+.mh.red .mt { color:var(--red); }
+
+/* ── PROSPECT STATUS BADGES ── */
+.badge-cold     { background:#f0f9ff; color:#0369a1; border:1px solid #bae6fd; }
+.badge-warm     { background:#fff7ed; color:#c2410c; border:1px solid #fed7aa; }
+.badge-hot      { background:#fff1f2; color:var(--red); border:1px solid #fecdd3; }
+.badge-active   { background:var(--green-l); color:var(--green-d); border:1px solid rgba(6,214,160,.2); }
+.badge-closed   { background:var(--blue-l); color:var(--blue); border:1px solid var(--blue-m); }
+.badge-inactive { background:var(--bg3); color:var(--muted); border:1px solid var(--border); }
+
+/* ── SECTION CARD internal spacing ── */
+.section-card .dash-search-wrap { margin:0 18px; }
+.section-card .tab-bar { margin:12px 18px 0; }
+.section-card .prospect-list { margin-top:4px; }
+
+/* ── STAT CARD active feel ── */
+.stat-card:active { transform:translateY(0) scale(.98); }
+
+/* ── PROSPECT MODAL top padding ── */
+#pmodal .mb { padding-top:20px; }
 </style>
 </head>
 <body>
@@ -2686,6 +2717,8 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 
 
 <script>
+
+
 
 
 
@@ -6044,6 +6077,7 @@ function dashFilter(mode,btn,search){
   if(btn){
     document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
     btn.classList.add('active');
+    var _tbar=btn.closest('.tab-bar');if(_tbar)setTimeout(function(){animTabPill(_tbar);},10);
   }
   var s=(search||'').trim().toLowerCase();
   var list=crm.prospects.slice();
@@ -6164,7 +6198,7 @@ function renderList(c,mode){
     return (p.name||'').toLowerCase().includes(searchVal)||(p.school||'').toLowerCase().includes(searchVal);
   });
 
-  var statusColors={active:'badge-blue',hot:'badge-red',closed:'badge-green',prospect:'badge-muted',lost:'badge-muted'};
+  var statusColors={active:'badge-active',hot:'badge-hot',warm:'badge-warm',cold:'badge-cold',closed:'badge-closed',inactive:'badge-inactive',prospect:'badge-muted',lost:'badge-muted'};
 
   var html='<div class="fi-anim">';
   html+='<div class="search-bar">'+
@@ -7519,7 +7553,37 @@ function schedMtg(id){
 
 // ── PROSPECT MODAL ──
 function openAddModal(){ openProspectModal(); }
-function openProspectModal(){document.getElementById('pmodal').classList.add('open');}
+function openProspectModal(id){
+  var modal=document.getElementById('pmodal');
+  var fields=['n-name','n-school','n-phone','n-remnote'];
+  fields.forEach(function(f){var el=document.getElementById(f);if(el)el.value='';});
+  document.getElementById('n-students').value='';
+  document.getElementById('n-status').value='warm';
+  document.getElementById('n-source').value='Book & Tech Fair';
+  document.getElementById('n-note').value='';
+  document.getElementById('n-rem').value='';
+  var titleEl=modal.querySelector('.mt');
+  var submitBtn=modal.querySelector('.mf .btn-primary');
+  if(id){
+    var p=crm.prospects.find(function(x){return String(x.id)===String(id);});
+    if(!p){toast('⚠️','Prospect not found');return;}
+    document.getElementById('n-name').value=p.name||'';
+    document.getElementById('n-school').value=p.school||'';
+    document.getElementById('n-phone').value=p.phone||'';
+    document.getElementById('n-students').value=p.students||'';
+    document.getElementById('n-status').value=p.status||'warm';
+    document.getElementById('n-source').value=p.source||'Other';
+    document.getElementById('n-note').value=(p.notes&&p.notes.length?p.notes[p.notes.length-1].text:'');
+    document.getElementById('n-rem').value=p.reminder||'';
+    document.getElementById('n-remnote').value=p.reminderNote||'';
+    if(titleEl) titleEl.textContent='Edit Prospect';
+    if(submitBtn){submitBtn.textContent='Save Changes';submitBtn.onclick=function(){updateProspect(id);};}
+  } else {
+    if(titleEl) titleEl.textContent='Add New Prospect';
+    if(submitBtn){submitBtn.textContent='Add Prospect';submitBtn.onclick=addProspect;}
+  }
+  modal.classList.add('open');
+}
 function closeProspectModal(){document.getElementById('pmodal').classList.remove('open');}
 function addProspect(){
   var name=document.getElementById('n-name').value.trim(),school=document.getElementById('n-school').value.trim();
@@ -7529,6 +7593,30 @@ function addProspect(){
   saveProspect(np);closeProspectModal();toast('🎉','Prospect added — live on all screens!');
   ['n-name','n-school','n-phone','n-students','n-note','n-rem','n-remnote'].forEach(function(i){document.getElementById(i).value='';});
 }
+function updateProspect(id){
+  var p=crm.prospects.find(function(x){return String(x.id)===String(id);});
+  if(!p){toast('⚠️','Prospect not found');return;}
+  var name=document.getElementById('n-name').value.trim();
+  var school=document.getElementById('n-school').value.trim();
+  if(!name||!school){swalError('Required','Name and school are required.');return;}
+  p.name=name; p.school=school;
+  p.phone=document.getElementById('n-phone').value.trim();
+  p.students=parseInt(document.getElementById('n-students').value)||p.students||0;
+  p.status=document.getElementById('n-status').value;
+  p.source=document.getElementById('n-source').value;
+  var noteText=document.getElementById('n-note').value.trim();
+  if(noteText){
+    if(!p.notes) p.notes=[];
+    p.notes.push({text:noteText,date:today(),by:_currentUser||'Me'});
+  }
+  p.reminder=document.getElementById('n-rem').value||null;
+  p.reminderNote=document.getElementById('n-remnote').value.trim();
+  p.updatedAt=new Date().toISOString();
+  saveProspect(p);
+  closeProspectModal();
+  toast('✅','Prospect updated successfully');
+}
+
 
 // ── MEETING MODAL ──
 function openMtgModal(){editMtgId=null;['mt-name','mt-school','mt-loc','mt-notes'].forEach(function(i){document.getElementById(i).value='';});document.getElementById('mt-date').value=today();document.getElementById('mt-time').value='10:00';document.getElementById('mt-dur').value='30';document.getElementById('mt-type').value='Demo';selMtgColor=MCOLS[0];buildMtgColors();document.getElementById('mtgmodal').classList.add('open');}
@@ -8120,6 +8208,8 @@ console.log('[SimpliEd CRM] Agent Graph loaded. Access via window.CRM_AGENTS');
 } else {
   showLogin();
 }
+
+
 
 
 
